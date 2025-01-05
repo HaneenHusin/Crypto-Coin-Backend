@@ -50,7 +50,8 @@ app.post('/api/coins', async (req, res) => {
 
 app.delete('/api/coins/:id', async (req, res) => {
   await Coin.findByIdAndDelete(req.params.id);
-  res.json({ message: 'Coin deleted' });
+  res.json({ message: 'Coin deleted' }); 
+
 });
 
 app.get('/api/portfolio/total-value', async (req, res) => {

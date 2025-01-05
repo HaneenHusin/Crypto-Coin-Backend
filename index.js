@@ -2,21 +2,19 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+const getCryptoPrices = require('./utils/cryptoPrices');
 const app = express();
-const portfolioRoutes = require('./routes/portfolioRoutes');
 
 // Apply CORS middleware
 app.use(cors({ origin: 'http://localhost:3001', methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type'] }));
 
-// Handle preflight requests
+
 app.options('*', cors());
 
-// Parse JSON requests
+
 app.use(bodyParser.json());
 
-// Define routes after middleware
-app.use('/api/portfolio', portfolioRoutes);
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/coin-portfolio')
@@ -56,7 +54,7 @@ app.delete('/api/coins/:id', async (req, res) => {
 
 app.get('/api/portfolio/total-value', async (req, res) => {
   try {
-    const portfolio = await Coin.find(); // Assuming Portfolio is Coin here
+    const portfolio = await Coin.find(); 
     const currentPrices = await getCryptoPrices();
     const totalValue = portfolio.reduce((sum, entry) => {
       const currentPrice = currentPrices[entry.name.toLowerCase()]?.eur || 0;

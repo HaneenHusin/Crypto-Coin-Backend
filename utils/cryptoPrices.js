@@ -9,6 +9,9 @@ const getCryptoPrices = async () => {
           ids: 'bitcoin,ethereum', 
           vs_currencies: 'eur',
         },
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
 

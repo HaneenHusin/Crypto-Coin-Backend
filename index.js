@@ -53,20 +53,7 @@ app.delete('/api/coins/:id', async (req, res) => {
   res.json({ message: 'Coin deleted' });
 });
 
-app.get('/api/portfolio/total-value', async (req, res) => {
-  try {
-    const portfolio = await Coin.find();
-    const currentPrices = await getCryptoPrices();
-    const totalValue = portfolio.reduce((sum, entry) => {
-      const currentPrice = currentPrices[entry.name.toLowerCase()]?.eur || 0;
-      return sum + entry.quantity * currentPrice;
-    }, 0);
-    res.json({ totalValue });
-  } catch (error) {
-    console.error('Error calculating total value:', error);
-    res.status(500).json({ error: 'Failed to calculate total value.' });
-  }
-});
+
 
 app.post('/api/coins/:id', async (req, res) => {
   try {
@@ -81,5 +68,30 @@ app.post('/api/coins/:id', async (req, res) => {
     res.json(updatedCoin);
   } catch (error) {
     res.status(500).json({ error: 'Failed to edit coin' });
+  }
+});
+
+app.get('/api/coins/total-value', async (req, res) => {
+  try {
+    const portfolio = await Coin.find();
+
+   
+    const currentPrices = await getCryptoPrices();
+
+    if (!currentPrices || !portfolio) {
+      throw new Error('Missing data for calculation');
+    }
+
+   
+    const totalValue = portfolio.reduce((sum, entry) => {
+      const currentPrice = currentPrices[entry.name.toLowerCase()]?.eur || 0; // Safely access the price
+      console.log(`Coin: ${entry.name}, Quantity: ${entry.quantity}, Current Price: ${currentPrice}`);
+      return sum + (entry.quantity * currentPrice);
+    }, 0);
+
+    res.json({ totalValue });
+  } catch (error) {
+    console.error('Error calculating total value:', error);
+    res.status(500).json({ error: 'Failed to calculate total value.' });
   }
 });

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const getCryptoPrices = require('./utils/cryptoPrices');
 const app = express();
+require('dotenv').config();
 
 
 // Apply CORS middleware

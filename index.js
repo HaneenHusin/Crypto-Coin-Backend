@@ -7,7 +7,7 @@ const app = express();
 require('dotenv').config();
 
 
-// Apply CORS middleware
+// Apply CORS middleware for local test
 app.use(cors({ origin: 'http://localhost:3001', methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type'] }));
 
 

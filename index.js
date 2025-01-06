@@ -5,21 +5,17 @@ const cors = require('cors');
 const getCryptoPrices = require('./utils/cryptoPrices');
 const app = express();
 require('dotenv').config();
-
+app.use(express.static('public'));
 
 // Apply CORS middleware for local test
 app.use(cors({ origin: 'http://localhost:3001', methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type'] }));
-
-
 app.options('*', cors());
 
 
 app.use(bodyParser.json());
 
-
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
+// Connect to MongoDB using the correct URI
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Failed to connect to MongoDB', err));
 
@@ -34,7 +30,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// Additional routes
+// Other routes for coins and portfolio
 const Coin = require('./models/Coin');
 
 app.get('/api/coins', async (req, res) => {
@@ -50,13 +46,12 @@ app.post('/api/coins', async (req, res) => {
 
 app.delete('/api/coins/:id', async (req, res) => {
   await Coin.findByIdAndDelete(req.params.id);
-  res.json({ message: 'Coin deleted' }); 
-
+  res.json({ message: 'Coin deleted' });
 });
 
 app.get('/api/portfolio/total-value', async (req, res) => {
   try {
-    const portfolio = await Coin.find(); 
+    const portfolio = await Coin.find();
     const currentPrices = await getCryptoPrices();
     const totalValue = portfolio.reduce((sum, entry) => {
       const currentPrice = currentPrices[entry.name.toLowerCase()]?.eur || 0;

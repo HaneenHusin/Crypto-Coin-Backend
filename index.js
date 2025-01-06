@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const getCryptoPrices = require('./utils/cryptoPrices');
 const app = express();
-const mongoose = require('mongoose');
 
 
 // Apply CORS middleware

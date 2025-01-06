@@ -8,8 +8,12 @@ require('dotenv').config();
 app.use(express.static('public'));
 
 // Apply CORS middleware for local test
-app.use(cors({ origin: 'http://localhost:3001', methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type'] }));
-app.options('*', cors());
+const corsOptions = {
+  origin: ['http://localhost:3001', 'https://crypto-dashboard-test.netlify.app'], // Add the Netlify URL here
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+};
+app.use(cors(corsOptions)); 
 
 
 app.use(bodyParser.json());

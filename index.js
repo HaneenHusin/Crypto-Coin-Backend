@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const getCryptoPrices = require('./utils/cryptoPrices');
 const app = express();
+const mongoose = require('mongoose');
+
 
 // Apply CORS middleware
 app.use(cors({ origin: 'http://localhost:3001', methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type'] }));
@@ -17,7 +19,7 @@ app.use(bodyParser.json());
 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/coin-portfolio')
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Failed to connect to MongoDB', err));
 

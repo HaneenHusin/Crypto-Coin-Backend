@@ -7,6 +7,11 @@ const getCryptoPrices = async () => {
                 ids: 'bitcoin,ethereum,tether', 
                 vs_currencies: 'eur',
             },
+            headers: {
+                'accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'x-cg-demo-api-key': 'CG-UpUDgPbX2ZqJRN7ipFmYLTAb'
+              }
         });
         return response.data;
     } catch (error) {

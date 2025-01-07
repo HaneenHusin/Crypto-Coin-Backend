@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const getCryptoPrices = require('./utils/cryptoPrices');
-const weeklyChangeRoutes = require('./routes/weeklyChange');
 const app = express();
 require('dotenv').config();
 app.use(express.static('public'));
@@ -19,8 +18,6 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
-app.use('/api', weeklyChangeRoutes);
-
 // Connect to MongoDB using the correct URI
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
@@ -30,7 +27,12 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.get('/', (req, res) => {
   res.send('Hello, Coin Portfolio API!');
 });
-
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+})
 // Start server
  const PORT = process.env.PORT || 3000; ;
 app.listen(PORT, () => {

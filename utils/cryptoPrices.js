@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const getCryptoPrices = async () => {
     try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
+        const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price`, {
             params: {
                 ids: 'bitcoin,ethereum,tether', 
                 vs_currencies: 'eur',

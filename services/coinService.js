@@ -4,7 +4,7 @@ const Coin = require('../models/Coin');
 exports.calculateTotalValue = async () => {
   const portfolio = await Coin.find();
   const currentPrices = await axiosInstance.get('/simple/price', {
-    params: { ids: 'bitcoin,ethereum,tether', vs_currencies: 'eur' },
+    params: { ids: 'bitcoin,ethereum', vs_currencies: 'eur' },
   });
 
   return portfolio.reduce((sum, entry) => {
